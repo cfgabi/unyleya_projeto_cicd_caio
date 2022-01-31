@@ -1,5 +1,5 @@
 # Docker
-# Build a Docker image
+# Build a Docker image and Push to Docker Hub
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
@@ -21,17 +21,9 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
-      displayName: Build an image
+      displayName: Build and Push Image to Docker Hub
       inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        tags: |
-          $(tag)
-    - task: Docker@2
-      displayName: 'Push the Docker image to Dockerhub'
-      inputs:
-        containerRegistry: $(dockerHub)
+        containerRegistry: 'dockerHub'
         repository: 'caiofgabi/unyleya_projeto_cicd_caio'
-        command: push
-        tags: |
-          $(tag)
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
